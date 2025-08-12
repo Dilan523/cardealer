@@ -1,20 +1,20 @@
 meta {
-  name: crear categoria
+  name: crear noticia
   type: http
   seq: 6
 }
 
 post {
-  url: http://localhost:3010/categorias
+  url: http://localhost:3010/noticias/
   body: json
   auth: inherit
 }
 
 body:json {
-   {
+    {
       "id": 4,
       "fechaCreacion": "2023-10-04",
       "estado": true,
-      "nombre": "Arte"
+      "titulo": "Evaluaciones"
     }
 }

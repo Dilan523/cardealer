@@ -8,21 +8,34 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NoticiasService = void 0;
 const common_1 = require("@nestjs/common");
+const noticia_entity_1 = require("./entities/noticia.entity");
 let NoticiasService = class NoticiasService {
-    create(createNoticiaDto) {
-        return 'This action adds a new noticia';
+    clientes = [
+        new noticia_entity_1.Noticia(1, new Date('2023-10-01'), true, 'Convocatorias'),
+        new noticia_entity_1.Noticia(2, new Date('2023-10-02'), true, 'Nuevo torneo'),
+        new noticia_entity_1.Noticia(3, new Date('2023-10-03'), true, 'Resultados'),
+    ];
+    create(nuevaNoticia) {
+        this.clientes.push(nuevaNoticia);
+        return nuevaNoticia;
     }
     findAll() {
-        return `This action returns all noticias`;
+        return this.clientes;
     }
     findOne(id) {
-        return `This action returns a #${id} noticia`;
+        let noticiaABuscar = this.clientes.find(function (n) {
+            return n.id === id;
+        });
+        return noticiaABuscar;
     }
     update(id, updateNoticiaDto) {
         return `This action updates a #${id} noticia`;
     }
     remove(id) {
-        return `This action removes a #${id} noticia`;
+        this.clientes = this.clientes.filter(function (Cliente) {
+            return Cliente.id !== id;
+        });
+        return `Cliente con id ${id} eliminado`;
     }
 };
 exports.NoticiasService = NoticiasService;

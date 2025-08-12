@@ -15,15 +15,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.NoticiasController = void 0;
 const common_1 = require("@nestjs/common");
 const noticias_service_1 = require("./noticias.service");
-const create_noticia_dto_1 = require("./dto/create-noticia.dto");
 const update_noticia_dto_1 = require("./dto/update-noticia.dto");
 let NoticiasController = class NoticiasController {
     noticiasService;
     constructor(noticiasService) {
         this.noticiasService = noticiasService;
     }
-    create(createNoticiaDto) {
-        return this.noticiasService.create(createNoticiaDto);
+    create(body) {
+        return this.noticiasService.create(body);
     }
     findAll() {
         return this.noticiasService.findAll();
@@ -43,7 +42,7 @@ __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_noticia_dto_1.CreateNoticiaDto]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], NoticiasController.prototype, "create", null);
 __decorate([

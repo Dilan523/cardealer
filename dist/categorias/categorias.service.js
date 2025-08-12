@@ -8,21 +8,34 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CategoriasService = void 0;
 const common_1 = require("@nestjs/common");
+const categoria_entity_1 = require("./entities/categoria.entity");
 let CategoriasService = class CategoriasService {
-    create(createCategoriaDto) {
-        return 'Esta accion crea una nueva categoria';
+    categorias = [
+        new categoria_entity_1.Categoria(1, new Date('2023-10-01'), true, 'Deportes'),
+        new categoria_entity_1.Categoria(2, new Date('2023-10-02'), true, 'Cultura'),
+        new categoria_entity_1.Categoria(3, new Date('2023-10-03'), true, 'Bienestar'),
+    ];
+    create(nuevaCategoria) {
+        this.categorias.push(nuevaCategoria);
+        return nuevaCategoria;
     }
     findAll() {
-        return `Esta accion retorna todas las categorias`;
+        return this.categorias;
     }
     findOne(id) {
-        return `Esta accion retorna una categoria #${id}`;
+        let categoriaABuscar = this.categorias.find(function (c) {
+            return c.id === id;
+        });
+        return categoriaABuscar;
     }
-    update(id, updateCategoriaDto) {
-        return `Esta accion actualiza una categoria #${id}`;
+    update(id, UpdateCategoriaDto) {
+        return `This action updates a #${id} categoria`;
     }
     remove(id) {
-        return `Esta accion elimina una categoria #${id}`;
+        this.categorias = this.categorias.filter(function (Categoria) {
+            return Categoria.id !== id;
+        });
+        return `Categoria con id ${id} eliminada`;
     }
 };
 exports.CategoriasService = CategoriasService;

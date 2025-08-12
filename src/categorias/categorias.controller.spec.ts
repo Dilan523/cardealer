@@ -1,20 +1,34 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { CategoriasController } from './categorias.controller';
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { CategoriasService } from './categorias.service';
+import { CreateCategoriaDto } from './dto/create-categoria.dto';
+import { UpdateCategoriaDto } from './dto/update-categoria.dto';
 
-describe('CategoriasController', () => {
-  let controller: CategoriasController;
+@Controller('categorias')
+export class CategoriaController {
+  constructor(private readonly categoriasService: CategoriasService) {}
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [CategoriasController],
-      providers: [CategoriasService],
-    }).compile();
+  @Post()
+  create(@Body() body:any) {
+    return this.categoriasService.create(body);
+  }
 
-    controller = module.get<CategoriasController>(CategoriasController);
-  });
+  @Get()
+  findAll() {
+    return this.categoriasService.findAll();
+  }
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
-});
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.categoriasService.findOne(+id);
+  }
+
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateNoticiaDto: UpdateCategoriaDto) {
+    return this.categoriasService.update(+id, updateNoticiaDto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.categoriasService.remove(+id);
+  }
+}

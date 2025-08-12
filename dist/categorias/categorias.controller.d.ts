@@ -4,9 +4,9 @@ import { UpdateCategoriaDto } from './dto/update-categoria.dto';
 export declare class CategoriasController {
     private readonly categoriasService;
     constructor(categoriasService: CategoriasService);
-    create(createCategoriaDto: CreateCategoriaDto): string;
-    findAll(): string;
-    findOne(id: string): string;
+    create(createCategoriaDto: CreateCategoriaDto): any;
+    findAll(): import("./entities/categoria.entity").Categoria[];
+    findOne(id: string): import("./entities/categoria.entity").Categoria | undefined;
     update(id: string, updateCategoriaDto: UpdateCategoriaDto): string;
     remove(id: string): string;
 }
