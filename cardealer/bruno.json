@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "cardealer",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
