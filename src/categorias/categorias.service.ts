@@ -21,9 +21,8 @@ private categorias: Categoria[] = [
   }
 
   findAll() {
-    return this.categorias;
-    this.prisma.categorias.findMany({
-      orderBy: [{'name': 'asc'}],
+    return this.prisma.categorias.findMany({
+      orderBy: [{nombre_categoria: 'desc'}]
     })
   }
 

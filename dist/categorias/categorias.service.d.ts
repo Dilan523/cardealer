@@ -6,7 +6,12 @@ export declare class CategoriasService {
     constructor(prisma: PrismaService);
     private categorias;
     create(nuevaCategoria: any): any;
-    findAll(): Categoria[];
+    findAll(): import("generated/prisma").Prisma.PrismaPromise<{
+        id_categoria: number;
+        fecha_creacion: Date;
+        estado: boolean;
+        nombre_categoria: string;
+    }[]>;
     findOne(id: number): Categoria | undefined;
     update(id: number, UpdateCategoriaDto: UpdateCategoriaDto): string;
     remove(id: number): string;

@@ -5,7 +5,12 @@ export declare class CategoriasController {
     private readonly categoriasService;
     constructor(categoriasService: CategoriasService);
     create(createCategoriaDto: CreateCategoriaDto): any;
-    findAll(): import("./entities/categoria.entity").Categoria[];
+    findAll(): import("generated/prisma").Prisma.PrismaPromise<{
+        id_categoria: number;
+        fecha_creacion: Date;
+        estado: boolean;
+        nombre_categoria: string;
+    }[]>;
     findOne(id: string): import("./entities/categoria.entity").Categoria | undefined;
     update(id: string, updateCategoriaDto: UpdateCategoriaDto): string;
     remove(id: string): string;

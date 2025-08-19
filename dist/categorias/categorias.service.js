@@ -28,9 +28,8 @@ let CategoriasService = class CategoriasService {
         return nuevaCategoria;
     }
     findAll() {
-        return this.categorias;
-        this.prisma.categorias.findMany({
-            orderBy: [{ 'name': 'asc' }],
+        return this.prisma.categorias.findMany({
+            orderBy: [{ nombre_categoria: 'desc' }]
         });
     }
     findOne(id) {
