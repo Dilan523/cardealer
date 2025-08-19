@@ -27,22 +27,21 @@ private categorias: Categoria[] = [
   }
 
   findOne(id: number) {
-    let categoriaABuscar = this.categorias.find(function(c: Categoria){
-      return c.id === id;
+    let marca = this.prisma.categorias.findFirst({
+      where: { id_categoria: id },
+      orderBy: [{nombre_categoria: 'asc'}, {id_categoria: 'desc'}]
     })
-    return categoriaABuscar
   }
-
   update(id: number, UpdateCategoriaDto: UpdateCategoriaDto) {
     return `This action updates a #${id} categoria`;
   }
 
   remove(id: number) {
     //filter retorna nuevo areglo o lista
-    // cuyos elementos cumplen la condicion;
+    //cuyos elementos cumplen la condicion;
     this.categorias = this.categorias.filter(function(Categoria){
       return Categoria.id !== id;
-    });
-    return `Categoria con id ${id} eliminada`;
+      });
+      return `Categoria con id ${id} eliminada`;
   }
 }

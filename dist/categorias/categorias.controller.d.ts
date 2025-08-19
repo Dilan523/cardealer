@@ -11,7 +11,7 @@ export declare class CategoriasController {
         estado: boolean;
         nombre_categoria: string;
     }[]>;
-    findOne(id: string): import("./entities/categoria.entity").Categoria | undefined;
+    findOne(id: string): void;
     update(id: string, updateCategoriaDto: UpdateCategoriaDto): string;
     remove(id: string): string;
 }

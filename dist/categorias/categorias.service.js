@@ -33,10 +33,10 @@ let CategoriasService = class CategoriasService {
         });
     }
     findOne(id) {
-        let categoriaABuscar = this.categorias.find(function (c) {
-            return c.id === id;
+        let marca = this.prisma.categorias.findFirst({
+            where: { id_categoria: id },
+            orderBy: [{ nombre_categoria: 'asc' }, { id_categoria: 'desc' }]
         });
-        return categoriaABuscar;
     }
     update(id, UpdateCategoriaDto) {
         return `This action updates a #${id} categoria`;
