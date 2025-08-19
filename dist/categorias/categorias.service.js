@@ -23,20 +23,33 @@ let CategoriasService = class CategoriasService {
         new categoria_entity_1.Categoria(2, new Date('2023-10-02'), true, 'Cultura'),
         new categoria_entity_1.Categoria(3, new Date('2023-10-03'), true, 'Bienestar'),
     ];
-    create(nuevaCategoria) {
-        this.categorias.push(nuevaCategoria);
-        return nuevaCategoria;
+    async create(createCategoriaDto) {
+        return await this.prisma.categorias.create({
+            data: {
+                nombre_categoria: createCategoriaDto.nombre_categoria,
+                estado: createCategoriaDto.estado ?? true,
+            },
+        });
     }
     findAll() {
         return this.prisma.categorias.findMany({
-            orderBy: [{ nombre_categoria: 'desc' }]
+            orderBy: [{ nombre_categoria: 'desc' }],
         });
     }
-    findOne(id) {
-        let marca = this.prisma.categorias.findFirst({
+    async findOne(id) {
+        let marca = await this.prisma.categorias.findFirst({
             where: { id_categoria: id },
-            orderBy: [{ nombre_categoria: 'asc' }, { id_categoria: 'desc' }]
+            orderBy: [{ nombre_categoria: 'asc' }, { id_categoria: 'desc' }],
         });
+        if (!marca) {
+            throw new common_1.HttpException({
+                status: 404,
+                error: 'Categoria no encontrada',
+            }, 404);
+        }
+        else {
+            return marca;
+        }
     }
     update(id, UpdateCategoriaDto) {
         return `This action updates a #${id} categoria`;

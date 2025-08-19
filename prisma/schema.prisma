@@ -17,7 +17,7 @@ datasource db {
 model Categorias {
   id_categoria          Int      @id @default(autoincrement())
   fecha_creacion        DateTime @default(now())
-  estado                Boolean
+  estado                Boolean @default(true)
   nombre_categoria      String
   categoria             noticias[] //conecta foranea
 }

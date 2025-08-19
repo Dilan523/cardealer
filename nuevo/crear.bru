@@ -1,0 +1,21 @@
+meta {
+  name: crear
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:3010/categorias
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "nombre_categoria" : "Artes"
+  }
+}
+
+settings {
+  encodeUrl: true
+}
