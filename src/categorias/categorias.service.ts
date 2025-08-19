@@ -2,9 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { CreateCategoriaDto } from './dto/create-categoria.dto';
 import { UpdateCategoriaDto } from './dto/update-categoria.dto';
 import { Categoria } from './entities/categoria.entity';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class CategoriasService {
+
+  constructor(private prisma: PrismaService){}
   //Datos de noticias
 private categorias: Categoria[] = [
   new Categoria(1, new Date('2023-10-01'), true, 'Deportes'),
@@ -19,6 +22,9 @@ private categorias: Categoria[] = [
 
   findAll() {
     return this.categorias;
+    this.prisma.categorias.findMany({
+      orderBy: [{'name': 'asc'}],
+    })
   }
 
   findOne(id: number) {

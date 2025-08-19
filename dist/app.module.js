@@ -13,12 +13,13 @@ const app_service_1 = require("./app.service");
 const customers_module_1 = require("./customers/customers.module");
 const categorias_module_1 = require("./categorias/categorias.module");
 const noticias_module_1 = require("./noticias/noticias.module");
+const prisma_module_1 = require("./prisma/prisma.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [customers_module_1.CustomersModule, categorias_module_1.CategoriasModule, noticias_module_1.NoticiasModule],
+        imports: [customers_module_1.CustomersModule, categorias_module_1.CategoriasModule, noticias_module_1.NoticiasModule, prisma_module_1.PrismaModule],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })
