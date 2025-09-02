@@ -1,0 +1,15 @@
+meta {
+  name: actualizar
+  type: http
+  seq: 5
+}
+
+patch {
+  url: http://localhost:3010/categorias/7
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

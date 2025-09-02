@@ -5,23 +5,40 @@ export declare class CategoriasController {
     private readonly categoriasService;
     constructor(categoriasService: CategoriasService);
     create(createCategoriaDto: CreateCategoriaDto): Promise<{
-        fecha_creacion: Date;
-        estado: boolean;
-        nombre_categoria: string;
-        id_categoria: number;
+        success: boolean;
+        data: {
+            nombre_categoria: string;
+            estado: boolean;
+            id_categoria: number;
+            fecha_creacion: Date;
+        };
     }>;
-    findAll(): import("generated/prisma").Prisma.PrismaPromise<{
-        fecha_creacion: Date;
-        estado: boolean;
-        nombre_categoria: string;
-        id_categoria: number;
-    }[]>;
+    findAll(): Promise<{
+        success: boolean;
+        data: {
+            nombre_categoria: string;
+            estado: boolean;
+            id_categoria: number;
+            fecha_creacion: Date;
+        }[];
+    }>;
     findOne(id: string): Promise<{
-        fecha_creacion: Date;
-        estado: boolean;
         nombre_categoria: string;
+        estado: boolean;
         id_categoria: number;
+        fecha_creacion: Date;
     }>;
-    update(id: string, updateCategoriaDto: UpdateCategoriaDto): string;
-    remove(id: string): string;
+    update(id: string, updateCategoriaDto: UpdateCategoriaDto): Promise<{
+        success: boolean;
+        data: {
+            nombre_categoria: string;
+            estado: boolean;
+            id_categoria: number;
+            fecha_creacion: Date;
+        };
+    }>;
+    remove(id: string): Promise<{
+        success: boolean;
+        deleted_id: number;
+    }>;
 }

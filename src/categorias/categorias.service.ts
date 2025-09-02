@@ -8,63 +8,105 @@ import { PrismaService } from '../prisma/prisma.service';
 export class CategoriasService {
   constructor(private prisma: PrismaService) {}
 
-  // Datos de noticias
   private categorias: Categoria[] = [
     new Categoria(1, new Date('2023-10-01'), true, 'Deportes'),
     new Categoria(2, new Date('2023-10-02'), true, 'Cultura'),
     new Categoria(3, new Date('2023-10-03'), true, 'Bienestar'),
   ];
 
-async create(createCategoriaDto: CreateCategoriaDto) {
-  return await this.prisma.categorias.create({
-    data: {
-      nombre_categoria: createCategoriaDto.nombre_categoria,
-      estado: createCategoriaDto.estado ?? true,   // 👈 default a true si no viene
-    },
-  });
-}
-
-  findAll() {
-    return this.prisma.categorias.findMany({
-      orderBy: [{ nombre_categoria: 'desc' }],
+  // Crear categoría
+  async create(createCategoriaDto: CreateCategoriaDto) {
+    const categoriaExist = await this.prisma.categorias.findFirst({
+      where: { nombre_categoria: createCategoriaDto.nombre_categoria },
     });
+
+    if (categoriaExist) {
+      throw new HttpException(
+        { success: false, error: 'La categoría ya existe' },
+        400,
+      );
+    }
+
+    const categoriaCreada = await this.prisma.categorias.create({
+      data: {
+        nombre_categoria: createCategoriaDto.nombre_categoria,
+        estado: createCategoriaDto.estado ?? true,
+      },
+    });
+
+    return {
+      success: true,
+      data: categoriaCreada,
+    };
   }
 
+  // Listar categorías
+  async findAll() {
+    const resultadosCategorias = await this.prisma.categorias.findMany({
+      orderBy: [{ nombre_categoria: 'desc' }],
+    });
+
+    if (resultadosCategorias.length === 0) {
+      throw new HttpException(
+        { success: false, error: 'Categorías no encontradas' },
+        404,
+      );
+    }
+
+    return {
+      success: true,
+      data: resultadosCategorias,
+    };
+  }
+
+  // Buscar categoría por id
   async findOne(id: number) {
-    let marca = await this.prisma.categorias.findFirst({
+    const categoria = await this.prisma.categorias.findFirst({
       where: { id_categoria: id },
       orderBy: [{ nombre_categoria: 'asc' }, { id_categoria: 'desc' }],
     });
 
-    if (!marca) {
-      // httpException
-      // 1. código de status http a lanzar
+    if (!categoria) {
       throw new HttpException(
-        {
-          status: 404,
-          error: 'Categoria no encontrada',
-        },
+        { success: false, error: 'Categoría no encontrada' },
+        404,
+      );
+    }
+
+    return categoria;
+  }
+
+  // Actualizar categoría (sin try/catch)
+  async update(id: number, updateCategoriaDto: UpdateCategoriaDto) {
+    const categoria = await this.findOne(id); // 👈 valida primero
+    const categoriaActualizada = await this.prisma.categorias.update({
+      where: { id_categoria: categoria.id_categoria },
+      data: updateCategoriaDto,
+    });
+
+    return {
+      success: true,
+      data: categoriaActualizada,
+    };
+  }
+
+  // Eliminar categoría (tal como pediste)
+  async remove(id: number) {
+    const categoriaBorrar = await this.findOne(id);
+    if (!categoriaBorrar) {
+      throw new HttpException(
+        { success: false, error: 'Categoria a borrar no encontrada' },
         404,
       );
     } else {
-      return marca;
-    }
-  }
+      await this.prisma.categorias.delete({
+        where: { id_categoria: id },
+      });
 
-  update(id: number, UpdateCategoriaDto: UpdateCategoriaDto) {
-    return `This action updates a #${id} categoria`;
-  }
-
-  async remove(id: number) {
-    //esperamosa que borre la categoria
-    await this.prisma.categorias.delete({
-      where: { id_categoria: id }, 
-    })
-    //enviamos respuesta a controller
-    return{
-      "success" : true,
-      "deleted_id" : id 
+      return {
+        success: true,
+        deleted_id: id,
+      };
     }
   }
 }
-

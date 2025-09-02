@@ -24,41 +24,70 @@ let CategoriasService = class CategoriasService {
         new categoria_entity_1.Categoria(3, new Date('2023-10-03'), true, 'Bienestar'),
     ];
     async create(createCategoriaDto) {
-        return await this.prisma.categorias.create({
+        const categoriaExist = await this.prisma.categorias.findFirst({
+            where: { nombre_categoria: createCategoriaDto.nombre_categoria },
+        });
+        if (categoriaExist) {
+            throw new common_1.HttpException({ success: false, error: 'La categoría ya existe' }, 400);
+        }
+        const categoriaCreada = await this.prisma.categorias.create({
             data: {
                 nombre_categoria: createCategoriaDto.nombre_categoria,
                 estado: createCategoriaDto.estado ?? true,
             },
         });
+        return {
+            success: true,
+            data: categoriaCreada,
+        };
     }
-    findAll() {
-        return this.prisma.categorias.findMany({
+    async findAll() {
+        const resultadosCategorias = await this.prisma.categorias.findMany({
             orderBy: [{ nombre_categoria: 'desc' }],
         });
+        if (resultadosCategorias.length === 0) {
+            throw new common_1.HttpException({ success: false, error: 'Categorías no encontradas' }, 404);
+        }
+        return {
+            success: true,
+            data: resultadosCategorias,
+        };
     }
     async findOne(id) {
-        let marca = await this.prisma.categorias.findFirst({
+        const categoria = await this.prisma.categorias.findFirst({
             where: { id_categoria: id },
             orderBy: [{ nombre_categoria: 'asc' }, { id_categoria: 'desc' }],
         });
-        if (!marca) {
-            throw new common_1.HttpException({
-                status: 404,
-                error: 'Categoria no encontrada',
-            }, 404);
+        if (!categoria) {
+            throw new common_1.HttpException({ success: false, error: 'Categoría no encontrada' }, 404);
+        }
+        return categoria;
+    }
+    async update(id, updateCategoriaDto) {
+        const categoria = await this.findOne(id);
+        const categoriaActualizada = await this.prisma.categorias.update({
+            where: { id_categoria: categoria.id_categoria },
+            data: updateCategoriaDto,
+        });
+        return {
+            success: true,
+            data: categoriaActualizada,
+        };
+    }
+    async remove(id) {
+        const categoriaBorrar = await this.findOne(id);
+        if (!categoriaBorrar) {
+            throw new common_1.HttpException({ success: false, error: 'Categoria a borrar no encontrada' }, 404);
         }
         else {
-            return marca;
+            await this.prisma.categorias.delete({
+                where: { id_categoria: id },
+            });
+            return {
+                success: true,
+                deleted_id: id,
+            };
         }
-    }
-    update(id, UpdateCategoriaDto) {
-        return `This action updates a #${id} categoria`;
-    }
-    remove(id) {
-        this.categorias = this.categorias.filter(function (Categoria) {
-            return Categoria.id !== id;
-        });
-        return `Categoria con id ${id} eliminada`;
     }
 };
 exports.CategoriasService = CategoriasService;

@@ -21,4 +21,9 @@ __decorate([
     (0, class_validator_1.MinLength)(2, { message: 'El nombre de la categoria debe tener al menos 2 caracteres' }),
     __metadata("design:type", String)
 ], CreateCategoriaDto.prototype, "nombre_categoria", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)({ message: 'El nombre de la categoria es obligatorio' }),
+    (0, class_validator_1.IsBoolean)({ message: 'El estado de categoria debe ser booleano' }),
+    __metadata("design:type", Boolean)
+], CreateCategoriaDto.prototype, "estado", void 0);
 //# sourceMappingURL=create-categoria.dto.js.map
