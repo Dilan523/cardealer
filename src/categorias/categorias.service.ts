@@ -55,12 +55,16 @@ async create(createCategoriaDto: CreateCategoriaDto) {
     return `This action updates a #${id} categoria`;
   }
 
-  remove(id: number) {
-    // filter retorna nuevo arreglo o lista cuyos elementos cumplen la condición
-    this.categorias = this.categorias.filter(function (Categoria) {
-      return Categoria.id !== id;
-    });
-    return `Categoria con id ${id} eliminada`;
+  async remove(id: number) {
+    //esperamosa que borre la categoria
+    await this.prisma.categorias.delete({
+      where: { id_categoria: id }, 
+    })
+    //enviamos respuesta a controller
+    return{
+      "success" : true,
+      "deleted_id" : id 
+    }
   }
 }
 
